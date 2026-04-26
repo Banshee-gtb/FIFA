@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Users, Calendar, Ticket } from 'lucide-react';
 import { VENUES, MATCHES } from '@/constants/data';
 import { formatDate } from '@/lib/utils';
+import { TeamFlag } from '@/components/ui/Flag';
 
 export default function VenueDetail() {
   const { id } = useParams<{ id: string }>();
@@ -21,9 +22,8 @@ export default function VenueDetail() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Split hero like real FIFA hospitality site */}
+      {/* Split hero */}
       <div className="flex flex-col lg:flex-row min-h-[70vh]">
-        {/* Left content */}
         <div className="flex-1 flex flex-col justify-center px-8 md:px-16 py-16 max-w-2xl">
           <Link to="/venues" className="flex items-center gap-2 text-blue-600 text-sm font-medium mb-8 hover:underline w-fit">
             <ArrowLeft size={16} /> Back to Venues
@@ -32,16 +32,15 @@ export default function VenueDetail() {
           <h1 className="text-6xl md:text-8xl font-black text-gray-900 leading-none mb-6">{venue.city.split('/')[0].toUpperCase()}</h1>
           <p className="text-gray-600 leading-relaxed mb-8 text-sm max-w-lg">{venue.description}</p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/tickets" className="bg-[#0a1f5c] hover:bg-blue-900 text-white font-bold px-7 py-3 rounded-full text-sm transition-colors">
+            <Link to="/queue" className="bg-[#0a1f5c] hover:bg-blue-900 text-white font-bold px-7 py-3 rounded-full text-sm transition-colors">
               {venue.city.split('/')[0]} Matches
             </Link>
-            <Link to="/hospitality" className="text-gray-700 font-semibold text-sm flex items-center gap-2 hover:text-blue-600 transition-colors">
-              Venue Series →
+            <Link to={`/hospitality/${venue.id}`} className="text-gray-700 font-semibold text-sm flex items-center gap-2 hover:text-blue-600 transition-colors">
+              Venue Hospitality →
             </Link>
           </div>
         </div>
 
-        {/* Right image */}
         <div className="lg:flex-1 relative min-h-64 lg:min-h-0">
           <img src={venue.image} alt={venue.city} className="w-full h-full object-cover" style={{ borderRadius: '0 0 0 60px' }} />
           <div className="absolute bottom-0 right-0 w-24 h-24 bg-blue-600 rounded-tl-full opacity-80" />
@@ -50,7 +49,6 @@ export default function VenueDetail() {
 
       {/* Venue details */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {[
             { icon: MapPin, label: 'Stadium', value: venue.stadium },
@@ -66,7 +64,6 @@ export default function VenueDetail() {
           ))}
         </div>
 
-        {/* Highlights */}
         <div className="mb-12">
           <h2 className="text-2xl font-black text-gray-900 mb-5">Venue Highlights</h2>
           <div className="flex flex-wrap gap-3">
@@ -76,7 +73,6 @@ export default function VenueDetail() {
           </div>
         </div>
 
-        {/* Matches at this venue */}
         {venueMatches.length > 0 && (
           <div>
             <h2 className="text-2xl font-black text-gray-900 mb-5">Matches at {venue.city}</h2>
@@ -87,16 +83,34 @@ export default function VenueDetail() {
                     <p className="text-[10px] font-bold uppercase">Match</p>
                     <p className="text-lg font-black">#{m.matchNumber}</p>
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 mb-1">{m.stage}{m.group ? ` · Group ${m.group}` : ''} · {formatDate(m.date)}</p>
-                    <p className="font-bold text-gray-900 text-sm">{m.team1} {m.team1Flag} vs {m.team2Flag} {m.team2}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <TeamFlag teamName={m.team1} size={22} />
+                      <span className="font-bold text-gray-900 text-sm">{m.team1}</span>
+                      <span className="text-gray-300 text-xs mx-1">vs</span>
+                      <TeamFlag teamName={m.team2} size={22} />
+                      <span className="font-bold text-gray-900 text-sm">{m.team2}</span>
+                    </div>
                   </div>
-                  <Link to="/tickets" className="text-blue-600 text-xs font-bold hover:underline whitespace-nowrap">Tickets →</Link>
+                  <Link to="/queue" className="text-blue-600 text-xs font-bold hover:underline whitespace-nowrap">Tickets →</Link>
                 </div>
               ))}
             </div>
           </div>
         )}
+
+        {/* Hospitality CTA */}
+        <div className="mt-10 bg-[#0a1f5c] rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between gap-5">
+          <div>
+            <h3 className="text-xl font-black mb-1">Experience {venue.city} in Style</h3>
+            <p className="text-blue-200 text-sm">VIP Hospitality packages available for all matches at {venue.stadium}.</p>
+          </div>
+          <Link to={`/hospitality/${venue.id}`}
+            className="bg-white text-blue-900 font-bold px-8 py-3 rounded-full text-sm hover:bg-blue-50 transition-colors whitespace-nowrap">
+            View Hospitality
+          </Link>
+        </div>
       </div>
     </div>
   );

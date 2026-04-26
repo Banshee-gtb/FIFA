@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Ticket, Star, Map, ShoppingBag, Users, Trophy, Calendar } from 'lucide-react';
+import { ArrowRight, Ticket, Star, Map, ShoppingBag, Trophy } from 'lucide-react';
 import heroBanner from '@/assets/hero-banner.jpg';
 import vipImg from '@/assets/vip-hospitality.jpg';
 import { MATCHES, VENUES } from '@/constants/data';
 import { formatDate } from '@/lib/utils';
+import { TeamFlag } from '@/components/ui/Flag';
 
 const featureCards = [
-  { icon: Ticket, title: 'Last-Minute Sales', desc: 'Secure your FIFA World Cup 2026™ tickets today, subject to availability.', cta: 'Buy Now', href: '/tickets', color: 'bg-blue-600' },
-  { icon: Star, title: 'VIP Hospitality', desc: 'Premium packages with exclusive lounge access, fine dining, and the best seats.', cta: 'Explore Packages', href: '/hospitality', color: 'bg-blue-600' },
-  { icon: Map, title: 'Tour Guide Experiences', desc: 'City tours, stadium insiders, and full World Cup journey packages.', cta: 'View Tours', href: '/tours', color: 'bg-blue-600' },
-  { icon: ShoppingBag, title: 'Official Merchandise', desc: 'Shop official FIFA World Cup 2026™ apparel, collectibles, and team gear.', cta: 'Shop Now', href: '/store', color: 'bg-blue-600' },
+  { icon: Ticket, title: 'Last-Minute Sales', desc: 'Secure your FIFA World Cup 2026™ tickets today, subject to availability.', cta: 'Buy Now', href: '/queue' },
+  { icon: Star, title: 'VIP Hospitality', desc: 'Premium packages with exclusive lounge access, fine dining, and the best seats.', cta: 'Explore Packages', href: '/hospitality' },
+  { icon: Map, title: 'Tour Guide Experiences', desc: 'City tours, stadium insiders, and full World Cup journey packages.', cta: 'View Tours', href: '/tours' },
+  { icon: ShoppingBag, title: 'Official Merchandise', desc: 'Shop official FIFA World Cup 2026™ apparel, collectibles, and team gear.', cta: 'Shop Now', href: '/store' },
 ];
 
 const upcomingMatches = MATCHES.filter(m => m.stage === 'Group Stage').slice(0, 4);
@@ -22,11 +23,9 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <img src={heroBanner} alt="FIFA World Cup 2026" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-        {/* Colorful arc overlays like real FIFA site */}
         <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-red-500 opacity-70 translate-y-1/2 -translate-x-1/4" />
         <div className="absolute bottom-0 left-8 w-48 h-48 rounded-full bg-yellow-400 opacity-60 translate-y-1/3" />
         <div className="absolute bottom-0 left-16 w-32 h-32 rounded-full bg-green-500 opacity-60 translate-y-1/4" />
-
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
           <p className="text-blue-400 uppercase tracking-widest text-sm font-semibold mb-3">Experience FIFA World Cup 2026™</p>
           <h1 className="text-white text-5xl md:text-7xl font-black leading-none mb-4">
@@ -38,7 +37,7 @@ export default function Home() {
             The greatest sporting event on Earth returns — bigger than ever across USA, Canada &amp; Mexico. 48 teams. 16 venues. One dream.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link to="/tickets" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full transition-colors text-sm uppercase tracking-wide">
+            <Link to="/queue" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full transition-colors text-sm uppercase tracking-wide">
               Buy Tickets
             </Link>
             <Link to="/hospitality" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-8 py-4 rounded-full transition-colors text-sm uppercase tracking-wide">
@@ -71,10 +70,7 @@ export default function Home() {
               </div>
               <div className="p-5 flex-1 flex flex-col">
                 <p className="text-gray-600 text-sm leading-relaxed flex-1">{card.desc}</p>
-                <Link
-                  to={card.href}
-                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full inline-block text-center transition-colors"
-                >
+                <Link to={card.href} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full inline-block text-center transition-colors">
                   {card.cta}
                 </Link>
               </div>
@@ -106,21 +102,21 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex flex-col items-center gap-1 flex-1">
-                    <span className="text-3xl">{m.team1Flag}</span>
+                  <div className="flex flex-col items-center gap-2 flex-1">
+                    <TeamFlag teamName={m.team1} size={36} />
                     <span className="text-sm font-bold text-gray-900">{m.team1}</span>
                   </div>
                   <div className="text-center px-4">
                     <span className="text-gray-400 font-bold text-xl">VS</span>
                   </div>
-                  <div className="flex flex-col items-center gap-1 flex-1">
-                    <span className="text-3xl">{m.team2Flag}</span>
+                  <div className="flex flex-col items-center gap-2 flex-1">
+                    <TeamFlag teamName={m.team2} size={36} />
                     <span className="text-sm font-bold text-gray-900">{m.team2}</span>
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                   <p className="text-xs text-gray-500">📍 {m.venue}, {m.city}</p>
-                  <Link to="/tickets" className="text-xs text-blue-600 font-semibold hover:underline">Buy Tickets →</Link>
+                  <Link to="/queue" className="text-xs text-blue-600 font-semibold hover:underline">Buy Tickets →</Link>
                 </div>
               </div>
             ))}
@@ -138,12 +134,8 @@ export default function Home() {
             <h2 className="text-white text-3xl md:text-4xl font-black mb-3">VIP Hospitality &amp; Premium Seating</h2>
             <p className="text-gray-300 text-sm mb-6">Fine dining, private boxes, pitch-side seats, and unforgettable memories at the world's greatest tournament.</p>
             <div className="flex flex-wrap gap-3">
-              <Link to="/hospitality" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full text-sm transition-colors">
-                View Hospitality
-              </Link>
-              <Link to="/vip" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-6 py-3 rounded-full text-sm transition-colors">
-                VIP Seats
-              </Link>
+              <Link to="/hospitality" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full text-sm transition-colors">View Hospitality</Link>
+              <Link to="/vip" className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-6 py-3 rounded-full text-sm transition-colors">VIP Seats</Link>
             </div>
           </div>
         </div>
@@ -192,7 +184,7 @@ export default function Home() {
               { val: '48', label: 'Nations' },
               { val: '104', label: 'Days' },
               { val: '1M+', label: 'Fans Expected' },
-              { val: '$', label: 'From $110' },
+              { val: 'From $110', label: 'Tickets from' },
             ].map(item => (
               <div key={item.label} className="bg-white/10 rounded-xl px-6 py-4 min-w-[80px]">
                 <div className="text-3xl md:text-4xl font-black text-yellow-400">{item.val}</div>
@@ -201,7 +193,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link to="/tickets" className="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-full text-sm uppercase tracking-wide transition-colors">
+            <Link to="/queue" className="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-full text-sm uppercase tracking-wide transition-colors">
               Get Tickets Now
             </Link>
             <Link to="/tours" className="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-4 rounded-full text-sm uppercase tracking-wide transition-colors border border-white/20">

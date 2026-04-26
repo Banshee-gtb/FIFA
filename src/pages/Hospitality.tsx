@@ -1,12 +1,14 @@
-import { Check, ShoppingCart, Star } from 'lucide-react';
+import { Check, ShoppingCart, Star, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { TICKET_CATEGORIES, VENUES } from '@/constants/data';
 import { useCart } from '@/hooks/useCart';
-import { formatPrice } from '@/lib/utils';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import vipImg from '@/assets/vip-hospitality.jpg';
 
 export default function Hospitality() {
   const { addItem } = useCart();
+  const { format } = useCurrency();
   const packages = TICKET_CATEGORIES.filter(t => t.type === 'hospitality');
 
   function handleAdd(pkg: typeof TICKET_CATEGORIES[0]) {
@@ -52,7 +54,7 @@ export default function Hospitality() {
                     <p className="text-gray-500 text-sm mt-1 max-w-xs">{pkg.description}</p>
                   </div>
                   <div className="text-right bg-blue-50 rounded-xl px-4 py-3">
-                    <div className="text-3xl font-black text-blue-600">{formatPrice(pkg.price)}</div>
+                    <div className="text-3xl font-black text-blue-600">{format(pkg.price)}</div>
                     <div className="text-xs text-gray-500">per person / per match</div>
                   </div>
                 </div>
@@ -67,10 +69,8 @@ export default function Hospitality() {
                   ))}
                 </ul>
                 <div className="flex gap-3">
-                  <button
-                    onClick={() => handleAdd(pkg)}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm"
-                  >
+                  <button onClick={() => handleAdd(pkg)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm">
                     <ShoppingCart size={16} />
                     Add to Cart
                   </button>
@@ -83,37 +83,42 @@ export default function Hospitality() {
           ))}
         </div>
 
-        {/* Venue Series */}
+        {/* Venue Series — each city links to its hospitality page */}
         <div className="mb-10">
           <h2 className="text-2xl font-black text-gray-900 mb-2">Venue Series</h2>
           <p className="text-gray-500 text-sm mb-6">Choose your preferred host city for the ultimate hospitality experience.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {VENUES.map(v => (
-              <div key={v.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 card-hover">
+              <Link key={v.id} to={`/hospitality/${v.id}`} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow block">
                 <div className="relative h-32 overflow-hidden">
-                  <img src={v.image} alt={v.city} className="w-full h-full object-cover" />
+                  <img src={v.image} alt={v.city} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-2 left-3">
-                    <p className="text-white font-black text-sm">{v.city.toUpperCase()}</p>
+                    <p className="text-white font-black text-sm">{v.city.split('/')[0].toUpperCase()}</p>
                     <p className="text-gray-300 text-xs">{v.matches} Matches</p>
                   </div>
                 </div>
-                <div className="p-3">
-                  <p className="text-xs text-gray-500 font-medium truncate">{v.stadium}</p>
-                  <p className="text-xs text-gray-400">{v.country}</p>
+                <div className="p-3 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium truncate">{v.stadium}</p>
+                    <p className="text-xs text-gray-400">{v.country}</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-blue-600 text-xs font-bold">
+                    <MapPin size={11} /> View
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* FAQ teaser */}
+        {/* CTA */}
         <div className="bg-[#0a1f5c] rounded-2xl p-8 text-white text-center">
           <h3 className="text-xl font-black mb-2">Need Help Choosing a Package?</h3>
           <p className="text-blue-200 text-sm mb-4">Our hospitality team is here to help you find the perfect FIFA World Cup 2026™ experience.</p>
-          <button className="bg-white text-blue-900 font-bold px-8 py-3 rounded-full text-sm hover:bg-blue-50 transition-colors">
+          <Link to="/contact" className="bg-white text-blue-900 font-bold px-8 py-3 rounded-full text-sm hover:bg-blue-50 transition-colors inline-block">
             Contact Us
-          </button>
+          </Link>
         </div>
       </div>
     </div>
