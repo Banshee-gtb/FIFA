@@ -3,6 +3,8 @@ import { Toaster } from 'sonner';
 import { CurrencyProvider } from '@/contexts/CurrencyContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import LiveTicker from '@/components/layout/LiveTicker';
+import CookieConsent from '@/components/layout/CookieConsent';
 import Home from '@/pages/Home';
 import Tickets from '@/pages/Tickets';
 import Hospitality from '@/pages/Hospitality';
@@ -26,6 +28,9 @@ import TermsConditions from '@/pages/TermsConditions';
 import RefundPolicy from '@/pages/RefundPolicy';
 import Accessibility from '@/pages/Accessibility';
 import FanGuide from '@/pages/FanGuide';
+import Orders from '@/pages/Orders';
+import Standings from '@/pages/Standings';
+import CookieSettings from '@/pages/CookieSettings';
 import NotFound from '@/pages/NotFound';
 
 export default function App() {
@@ -35,6 +40,7 @@ export default function App() {
         <Toaster position="top-right" richColors />
         <div className="flex flex-col min-h-screen">
           <Navbar />
+          <LiveTicker />
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -60,10 +66,14 @@ export default function App() {
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/accessibility" element={<Accessibility />} />
               <Route path="/fan-guide" element={<FanGuide />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/standings" element={<Standings />} />
+              <Route path="/cookie-settings" element={<CookieSettings />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
+          <CookieConsent />
         </div>
       </CurrencyProvider>
     </BrowserRouter>

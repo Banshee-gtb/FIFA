@@ -335,7 +335,7 @@ export default function Checkout() {
       setTimeout(() => {
         setProcessing(false);
         const ref = Math.random().toString(36).substring(2, 9).toUpperCase();
-        setOrder({
+        const newOrder: OrderData = {
           ref,
           firstName: form.firstName,
           lastName: form.lastName,
@@ -344,7 +344,12 @@ export default function Checkout() {
           total,
           payMethod,
           date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-        });
+        };
+        // Save order to localStorage
+        const existing = JSON.parse(localStorage.getItem('fwc26_orders') || '[]');
+        existing.push(newOrder);
+        localStorage.setItem('fwc26_orders', JSON.stringify(existing));
+        setOrder(newOrder);
         clearCart();
         setStep('confirmation');
       }, 2200);

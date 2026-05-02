@@ -7,7 +7,7 @@ const footerLinks = {
     { label: 'Host Countries', href: '/venues' },
     { label: 'Schedule', href: '/matches' },
     { label: 'Teams', href: '/teams' },
-    { label: 'Standings', href: '/matches' },
+    { label: 'Standings', href: '/standings' },
     { label: 'Fan Guide', href: '/fan-guide' },
   ],
   'Buy Tickets': [
@@ -20,6 +20,7 @@ const footerLinks = {
   ],
   'Fan Services': [
     { label: 'Fan ID', href: '/fan-id' },
+    { label: 'My Orders', href: '/orders' },
     { label: 'FAQ', href: '/faq' },
     { label: 'Contact Us', href: '/contact' },
     { label: 'Accessibility', href: '/accessibility' },
@@ -28,7 +29,7 @@ const footerLinks = {
   Legal: [
     { label: 'Terms & Conditions', href: '/terms' },
     { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Cookie Policy', href: '/privacy' },
+    { label: 'Cookie Settings', href: '/cookie-settings' },
     { label: 'Refund Policy', href: '/refund-policy' },
   ],
 };
@@ -81,7 +82,7 @@ export default function Footer() {
           <div className="flex gap-6">
             <Link to="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-gray-300 transition-colors">Terms</Link>
-            <Link to="/privacy" className="hover:text-gray-300 transition-colors">Cookies</Link>
+            <Link to="/cookie-settings" className="hover:text-gray-300 transition-colors">Cookies</Link>
             <Link to="/refund-policy" className="hover:text-gray-300 transition-colors">Refunds</Link>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { useCurrency, CURRENCIES, type CurrencyCode } from '@/contexts/CurrencyC
 
 const navLinks = [
   { label: 'SCORES & FIXTURES', href: '/matches' },
+  { label: 'STANDINGS', href: '/standings' },
   { label: 'TEAMS', href: '/teams' },
   { label: 'HOST COUNTRIES & CITIES', href: '/venues' },
   { label: 'TICKETS', href: '/tickets' },
