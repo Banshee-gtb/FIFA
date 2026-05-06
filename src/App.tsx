@@ -31,6 +31,7 @@ import FanGuide from '@/pages/FanGuide';
 import Orders from '@/pages/Orders';
 import Standings from '@/pages/Standings';
 import CookieSettings from '@/pages/CookieSettings';
+import PayoneerPayment from '@/pages/PayoneerPayment';
 import NotFound from '@/pages/NotFound';
 
 export default function App() {
@@ -69,6 +70,7 @@ export default function App() {
               <Route path="/orders" element={<Orders />} />
               <Route path="/standings" element={<Standings />} />
               <Route path="/cookie-settings" element={<CookieSettings />} />
+              <Route path="/payoneer" element={<PayoneerPayment />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

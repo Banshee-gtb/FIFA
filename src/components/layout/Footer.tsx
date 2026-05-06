@@ -17,6 +17,7 @@ const footerLinks = {
     { label: 'Tour Packages', href: '/tours' },
     { label: 'FIFA Store', href: '/store' },
     { label: 'Ticket Queue', href: '/queue' },
+    { label: 'Pay with Payoneer', href: '/payoneer' },
   ],
   'Fan Services': [
     { label: 'Fan ID', href: '/fan-id' },

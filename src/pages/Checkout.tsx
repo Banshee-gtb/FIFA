@@ -256,14 +256,40 @@ function ConfirmationScreen({ order }: { order: OrderData }) {
 
         {/* Payoneer info note */}
         {order.payMethod === 'payoneer' && (
-          <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 mb-6 flex gap-3">
-            <img src={payoneerLogo} alt="Payoneer" className="h-8 object-contain flex-shrink-0" />
-            <div>
-              <h4 className="font-bold text-orange-800 text-sm mb-1">Payoneer Payment Instructions</h4>
-              <p className="text-orange-700 text-xs leading-relaxed">
-                Send your payment to our Payoneer account. Use your order reference <strong>FWC26-{order.ref}</strong> as the payment note. Once confirmed, your tickets will be activated within 24 hours. For assistance, contact us at <a href="mailto:tickets@fifa2026experience.com" className="underline font-semibold">tickets@fifa2026experience.com</a>.
-              </p>
+          <div className="bg-orange-50 border border-orange-300 rounded-2xl p-6 mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={payoneerLogo} alt="Payoneer" className="h-7 object-contain flex-shrink-0" />
+              <h4 className="font-black text-orange-800 text-base">Complete Your Payoneer Payment</h4>
             </div>
+
+            <div className="bg-white rounded-xl p-4 mb-4 space-y-2 border border-orange-200">
+              <p className="text-xs font-black text-orange-700 uppercase tracking-wide">Step 1 — Send payment to this Payoneer account:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase font-semibold">Payoneer Email</p>
+                  <p className="text-sm font-black text-gray-900 font-mono">payments@fifa2026experience.com</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase font-semibold">Account Name</p>
+                  <p className="text-sm font-black text-gray-900">FIFA 2026 Experience Ltd.</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className="text-[10px] text-gray-400 uppercase font-semibold">Payment Note (Required)</p>
+                  <p className="text-sm font-black text-blue-600 font-mono">FWC26-{order.ref}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-orange-100 rounded-xl p-3 mb-4">
+              <p className="text-xs font-bold text-orange-800">Step 2 — After sending, submit your Transaction ID:</p>
+              <Link to="/payoneer" className="mt-2 inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-4 py-2 rounded-full transition-colors">
+                Submit Payment Proof →
+              </Link>
+            </div>
+
+            <p className="text-orange-700 text-xs">
+              Questions? Contact <a href="mailto:payments@fifa2026experience.com" className="underline font-semibold">payments@fifa2026experience.com</a> — we respond within 2 hours.
+            </p>
           </div>
         )}
 
@@ -534,24 +560,55 @@ export default function Checkout() {
 
                 {/* Payoneer form */}
                 {payMethod === 'payoneer' && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-xl p-5 space-y-3">
-                    <div className="flex items-center gap-3 mb-2">
-                      <img src={payoneerLogo} alt="Payoneer" className="h-7 object-contain" />
-                      <span className="text-sm font-bold text-gray-800">Pay with Payoneer</span>
+                  <div className="bg-orange-50 border border-orange-200 rounded-xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <img src={payoneerLogo} alt="Payoneer" className="h-7 object-contain" />
+                        <span className="text-sm font-bold text-gray-800">Pay with Payoneer</span>
+                      </div>
+                      <Link to="/payoneer" target="_blank" className="text-xs text-orange-600 font-semibold hover:underline flex items-center gap-1">
+                        Payment Guide →
+                      </Link>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      Payoneer accepts payments from <strong>200+ countries</strong>. Available in USD, EUR, GBP, and more.
-                      After placing your order, you'll receive detailed Payoneer payment instructions by email.
-                    </p>
+
+                    {/* Receiving account details */}
+                    <div className="bg-orange-100 border border-orange-300 rounded-xl p-4 space-y-2">
+                      <p className="text-xs font-black text-orange-800 uppercase tracking-wide mb-2">📤 Send Payment To This Account</p>
+                      <div className="grid grid-cols-1 gap-2">
+                        <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2">
+                          <div>
+                            <p className="text-[10px] text-gray-400 font-semibold uppercase">Payoneer Email</p>
+                            <p className="text-xs font-black text-gray-900 font-mono">payments@fifa2026experience.com</p>
+                          </div>
+                          <button onClick={() => { navigator.clipboard.writeText('payments@fifa2026experience.com'); toast.success('Copied!'); }}
+                            className="text-orange-500 hover:text-orange-700 text-xs font-bold flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" strokeWidth="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" strokeWidth="2"/></svg>
+                            Copy
+                          </button>
+                        </div>
+                        <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2">
+                          <div>
+                            <p className="text-[10px] text-gray-400 font-semibold uppercase">Account Name</p>
+                            <p className="text-xs font-black text-gray-900">FIFA 2026 Experience Ltd.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2 mt-2">
+                        <p className="text-[10px] text-yellow-700 font-semibold">⚠️ Include your order reference as the payment note so we can match your payment.</p>
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Your Payoneer Email *</label>
                       <input name="payoneerEmail" type="email" placeholder="your-payoneer@email.com" value={form.payoneerEmail} onChange={handleChange}
-                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                      <p className="text-[10px] text-gray-400 mt-1">We will send payment instructions to this email after placing your order.</p>
                     </div>
-                    <div className="bg-orange-100 rounded-lg p-3">
-                      <p className="text-xs text-orange-700 font-semibold">✓ Accepted currencies: USD, EUR, GBP, CAD, AUD, JPY, MXN, BRL and more</p>
-                      <p className="text-xs text-orange-700 mt-1">✓ Payment confirmation within 1–24 hours after transfer</p>
-                      <p className="text-xs text-orange-700 mt-1">✓ Tickets activated once payment is received</p>
+
+                    <div className="bg-white border border-orange-100 rounded-lg p-3 space-y-1">
+                      <p className="text-xs text-orange-700 font-semibold">✓ Accepted: USD, EUR, GBP, CAD, AUD, JPY, MXN, BRL and 7+ more</p>
+                      <p className="text-xs text-orange-700">✓ Confirmation within 1–24 hours · Tickets activated on receipt</p>
+                      <p className="text-xs text-orange-700">✓ Available in 200+ countries worldwide</p>
                     </div>
                   </div>
                 )}
