@@ -8,7 +8,7 @@ import { formatPrice } from '@/lib/utils';
 import payoneerLogo from '@/assets/payoneer-logo.png';
 
 type Step = 'details' | 'payment' | 'confirmation';
-type PayMethod = 'card' | 'paypal' | 'payoneer';
+type PayMethod = 'card' | 'paypal' | 'payoneer' | 'giftcard';
 
 interface OrderData {
   ref: string;
@@ -309,6 +309,8 @@ function ConfirmationScreen({ order }: { order: OrderData }) {
 // ─── Main Checkout ────────────────────────────────────────────────────────────
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
+  const [gcValidated, setGcValidated] = useState(false);
+  const [gcBalance, setGcBalance] = useState(0);
   const { format } = useCurrency();
   const navigate = useNavigate();
 
@@ -323,6 +325,10 @@ export default function Checkout() {
     cardName: '', cardNumber: '', expiry: '', cvv: '',
     paypalEmail: '',
     payoneerEmail: '',
+    giftCardCode: '',
+    giftCardBalance: 0,
+    giftCardCode: '',
+    giftCardBalance: 0,
   });
 
   const tax = totalPrice * 0.08;
@@ -355,6 +361,20 @@ export default function Checkout() {
           toast.error('Please enter your Payoneer email.');
           return;
         }
+      } else if (payMethod === 'giftcard') {
+        if (!gcValidated) {
+          toast.error('Please validate your gift card code first.');
+          return;
+        }
+        if (gcBalance < total) {
+          toast.error(`Insufficient gift card balance ($${gcBalance}). Total is $${total.toFixed(2)}.`);
+          return;
+        }
+        // Mark gift card as used
+        const cards: Array<{ code: string; denomination: number; used: boolean; usedAt?: string; usedByOrderRef?: string }> = JSON.parse(localStorage.getItem('fwc26_gift_cards') || '[]');
+        const ref = Math.random().toString(36).substring(2, 9).toUpperCase();
+        const updatedCards = cards.map(c => c.code === form.giftCardCode.trim().toUpperCase() ? { ...c, used: true, usedAt: new Date().toISOString(), usedByOrderRef: `FWC26-${ref}` } : c);
+        localStorage.setItem('fwc26_gift_cards', JSON.stringify(updatedCards));
       }
 
       setProcessing(true);
@@ -396,7 +416,21 @@ export default function Checkout() {
     { key: 'card', label: 'Credit / Debit Card', subtitle: 'Visa, Mastercard accepted' },
     { key: 'paypal', label: 'PayPal', subtitle: 'Pay securely with PayPal' },
     { key: 'payoneer', label: 'Payoneer', subtitle: 'Pay from 200+ countries worldwide' },
+    { key: 'giftcard', label: 'Gift Card', subtitle: 'Redeem your FIFA WC 2026™ gift card' },
   ];
+
+  function validateGiftCard() {
+    const code = form.giftCardCode.trim().toUpperCase();
+    if (!code) { toast.error('Please enter a gift card code.'); return; }
+    const cards: Array<{ code: string; denomination: number; used: boolean }> = JSON.parse(localStorage.getItem('fwc26_gift_cards') || '[]');
+    const card = cards.find(c => c.code === code);
+    if (!card) { toast.error('Invalid gift card code. Please check and try again.'); return; }
+    if (card.used) { toast.error('This gift card has already been used.'); return; }
+    setGcValidated(true);
+    setGcBalance(card.denomination);
+    setForm(prev => ({ ...prev, giftCardBalance: card.denomination }));
+    toast.success(`Gift card validated! Balance: $${card.denomination}`);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -496,6 +530,12 @@ export default function Checkout() {
                         {m.key === 'payoneer' && (
                           <img src={payoneerLogo} alt="Payoneer" className="h-6 object-contain max-w-[80px]" />
                         )}
+                        {m.key === 'giftcard' && (
+                          <div className="flex items-center gap-1.5">
+                            <div className="bg-purple-600 text-white text-[9px] font-black px-2 py-1 rounded">GIFT</div>
+                            <span className="text-xs font-black text-purple-700">FIFA WC 2026™</span>
+                          </div>
+                        )}
                       </div>
                       <p className="text-xs font-bold text-gray-800">{m.label}</p>
                       <p className="text-[10px] text-gray-400">{m.subtitle}</p>
@@ -554,6 +594,48 @@ export default function Checkout() {
                       <label className="block text-xs font-semibold text-gray-600 mb-1">PayPal Email *</label>
                       <input name="paypalEmail" type="email" placeholder="you@email.com" value={form.paypalEmail} onChange={handleChange}
                         className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Gift Card form */}
+                {payMethod === 'giftcard' && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="bg-purple-600 text-white text-xs font-black px-3 py-1.5 rounded-lg">🎁 GIFT CARD</div>
+                      <span className="text-sm font-bold text-gray-800">Redeem Gift Card</span>
+                    </div>
+                    <p className="text-xs text-gray-500">Enter your 16-character FIFA World Cup 2026™ gift card code below to apply your balance.</p>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Gift Card Code *</label>
+                      <div className="flex gap-2">
+                        <input
+                          name="giftCardCode"
+                          placeholder="XXXX-XXXX-XXXX-XXXX"
+                          value={form.giftCardCode}
+                          onChange={e => { handleChange(e); setGcValidated(false); setGcBalance(0); }}
+                          className="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-mono uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-purple-400"
+                          maxLength={19}
+                        />
+                        <button type="button" onClick={validateGiftCard}
+                          className="flex-shrink-0 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition-colors">
+                          Validate
+                        </button>
+                      </div>
+                    </div>
+                    {gcValidated && (
+                      <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+                        <div className="bg-green-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                          <Check size={16} className="text-green-600" />
+                        </div>
+                        <div>
+                          <p className="font-black text-green-800 text-sm">Gift Card Valid!</p>
+                          <p className="text-green-600 text-xs">Available balance: <strong>${gcBalance.toFixed(2)}</strong>{gcBalance >= total ? ' — Covers full order ✓' : ` — Shortfall: $${(total - gcBalance).toFixed(2)}`}</p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="bg-purple-100 border border-purple-200 rounded-lg p-3">
+                      <p className="text-xs text-purple-700 font-semibold">Don't have a gift card? <Link to="/gift-cards" className="underline font-bold">Buy one here →</Link></p>
                     </div>
                   </div>
                 )}
@@ -638,6 +720,7 @@ export default function Checkout() {
               <MastercardLogo className="h-7 w-auto opacity-80" />
               <PayPalLogo className="h-5 w-auto opacity-80" />
               <img src={payoneerLogo} alt="Payoneer" className="h-5 object-contain opacity-80" />
+              <div className="bg-purple-600 text-white text-[9px] font-black px-2 py-1 rounded opacity-80">GIFT CARD</div>
               <span className="text-xs text-gray-400">· SSL Secured</span>
             </div>
           )}

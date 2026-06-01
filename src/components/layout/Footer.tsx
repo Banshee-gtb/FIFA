@@ -16,6 +16,7 @@ const footerLinks = {
     { label: 'VIP Seats', href: '/vip' },
     { label: 'Tour Packages', href: '/tours' },
     { label: 'FIFA Store', href: '/store' },
+    { label: 'Gift Cards', href: '/gift-cards' },
     { label: 'Ticket Queue', href: '/queue' },
     { label: 'Pay with Payoneer', href: '/payoneer' },
   ],

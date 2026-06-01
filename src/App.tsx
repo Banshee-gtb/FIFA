@@ -32,51 +32,75 @@ import Orders from '@/pages/Orders';
 import Standings from '@/pages/Standings';
 import CookieSettings from '@/pages/CookieSettings';
 import PayoneerPayment from '@/pages/PayoneerPayment';
+import GiftCard from '@/pages/GiftCard';
+import AdminLogin from '@/pages/admin/AdminLogin';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
 import NotFound from '@/pages/NotFound';
+
+// Admin layout — no Navbar/Footer/Ticker
+function AdminLayout() {
+  return (
+    <Routes>
+      <Route path="/login" element={<AdminLogin />} />
+      <Route path="/" element={<AdminDashboard />} />
+    </Routes>
+  );
+}
+
+// Public layout — full Navbar/Footer/Ticker
+function PublicLayout() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <LiveTicker />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tickets" element={<Tickets />} />
+          <Route path="/hospitality" element={<Hospitality />} />
+          <Route path="/hospitality/:id" element={<HospitalityCity />} />
+          <Route path="/vip" element={<VIPSeats />} />
+          <Route path="/tours" element={<TourGuide />} />
+          <Route path="/store" element={<Merchandise />} />
+          <Route path="/matches" element={<Matches />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/venues" element={<Venues />} />
+          <Route path="/venues/:id" element={<VenueDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/fan-id" element={<FanID />} />
+          <Route path="/queue" element={<TicketQueue />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/accessibility" element={<Accessibility />} />
+          <Route path="/fan-guide" element={<FanGuide />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/standings" element={<Standings />} />
+          <Route path="/cookie-settings" element={<CookieSettings />} />
+          <Route path="/payoneer" element={<PayoneerPayment />} />
+          <Route path="/gift-cards" element={<GiftCard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+      <CookieConsent />
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
       <CurrencyProvider>
         <Toaster position="top-right" richColors />
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <LiveTicker />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/tickets" element={<Tickets />} />
-              <Route path="/hospitality" element={<Hospitality />} />
-              <Route path="/hospitality/:id" element={<HospitalityCity />} />
-              <Route path="/vip" element={<VIPSeats />} />
-              <Route path="/tours" element={<TourGuide />} />
-              <Route path="/store" element={<Merchandise />} />
-              <Route path="/matches" element={<Matches />} />
-              <Route path="/teams" element={<Teams />} />
-              <Route path="/venues" element={<Venues />} />
-              <Route path="/venues/:id" element={<VenueDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/fan-id" element={<FanID />} />
-              <Route path="/queue" element={<TicketQueue />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsConditions />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/accessibility" element={<Accessibility />} />
-              <Route path="/fan-guide" element={<FanGuide />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/standings" element={<Standings />} />
-              <Route path="/cookie-settings" element={<CookieSettings />} />
-              <Route path="/payoneer" element={<PayoneerPayment />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <CookieConsent />
-        </div>
+        <Routes>
+          <Route path="/admin/*" element={<AdminLayout />} />
+          <Route path="/*" element={<PublicLayout />} />
+        </Routes>
       </CurrencyProvider>
     </BrowserRouter>
   );
