@@ -8,7 +8,6 @@ import {
 import giftCardBg from '@/assets/gift-card-bg.jpg';
 import { useCurrency } from '@/contexts/CurrencyContext';
 
-// ── External gift card purchase partners ─────────────────────────────────────
 const GIFT_CARD_PARTNERS = [
   {
     name: 'Paysafecard',
@@ -39,13 +38,12 @@ const GIFT_CARD_PARTNERS = [
   },
 ];
 
-// ── How it works steps ────────────────────────────────────────────────────────
 const HOW_IT_WORKS = [
   {
     num: '01',
     icon: <ExternalLink size={22} className="text-blue-500" />,
     title: 'Visit a Gift Card Store',
-    desc: 'Click one of our partner links below to buy a FIFA World Cup 2026™ gift card from a trusted external retailer.',
+    desc: 'Click one of our partner links below to buy a FIFA World Cup 2026 gift card from a trusted external retailer.',
     color: 'bg-blue-100',
   },
   {
@@ -59,7 +57,7 @@ const HOW_IT_WORKS = [
     num: '03',
     icon: <CreditCard size={22} className="text-purple-500" />,
     title: 'Enter Code at Checkout',
-    desc: 'At checkout on this site, select "Gift Card" as payment, enter your code, and it will be validated and applied instantly.',
+    desc: 'At checkout on this site, select Gift Card as payment, enter your code, and it will be validated and applied instantly.',
     color: 'bg-purple-100',
   },
   {
@@ -71,7 +69,33 @@ const HOW_IT_WORKS = [
   },
 ];
 
-// ── Redemption box ────────────────────────────────────────────────────────────
+const FAQ_ITEMS = [
+  {
+    q: 'Where do I buy a gift card?',
+    a: 'Click any partner link above (Paysafecard, Coincards, G2A). You will be redirected to their site to purchase and receive your unique scratch-reveal code.',
+  },
+  {
+    q: 'How do I use the code?',
+    a: 'Add your desired tickets or merchandise to cart, go to Checkout, select Gift Card as payment method, and enter your code. Balance is deducted instantly.',
+  },
+  {
+    q: 'Can I use one code for multiple orders?',
+    a: 'Each code can only be used once. If your cart total is less than the card value, the remaining balance cannot be transferred to a new code.',
+  },
+  {
+    q: 'What if my code is invalid?',
+    a: 'First use the balance checker above. If the code shows as invalid, contact the retailer where you purchased the card. They can verify the code was activated.',
+  },
+  {
+    q: 'Is there an expiry on the code?',
+    a: 'Expiry depends on the partner retailer. Most codes are valid for 12 to 18 months from purchase. Check your receipt or the partner terms for exact details.',
+  },
+  {
+    q: 'Can I use a gift card with other payment methods?',
+    a: 'Currently, checkout supports one payment method per order. If your gift card does not cover the full amount, consider adding only items that match your available balance.',
+  },
+];
+
 function RedemptionBox() {
   const { format } = useCurrency();
   const [code, setCode] = useState('');
@@ -160,19 +184,18 @@ function RedemptionBox() {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
 export default function GiftCard() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <div className="relative overflow-hidden">
         <img src={giftCardBg} alt="Gift Card" className="w-full h-80 object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent flex items-center">
           <div className="max-w-5xl mx-auto px-6 w-full">
             <div className="flex items-center gap-3 mb-3">
               <Gift size={28} className="text-yellow-400" />
-              <span className="text-yellow-400 text-sm font-black uppercase tracking-widest">FIFA World Cup 2026™</span>
+              <span className="text-yellow-400 text-sm font-black uppercase tracking-widest">FIFA World Cup 2026</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight">
               Gift Cards
@@ -192,11 +215,11 @@ export default function GiftCard() {
         </div>
       </div>
 
-      {/* ── How It Works ── */}
+      {/* How It Works */}
       <div className="bg-white border-b border-gray-100 py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-black text-gray-900 text-center mb-2">How It Works</h2>
-          <p className="text-gray-500 text-sm text-center mb-10">Four simple steps to experience the FIFA World Cup 2026™</p>
+          <p className="text-gray-500 text-sm text-center mb-10">Four simple steps to experience the FIFA World Cup 2026</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {HOW_IT_WORKS.map(step => (
               <div key={step.num} className="relative">
@@ -210,7 +233,6 @@ export default function GiftCard() {
                   <h3 className="font-black text-gray-900 text-sm mb-2">{step.title}</h3>
                   <p className="text-gray-600 text-xs leading-relaxed">{step.desc}</p>
                 </div>
-                {/* Arrow connector */}
                 {step.num !== '04' && (
                   <div className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 bg-gray-50 rounded-full p-1">
                     <ArrowRight size={14} className="text-gray-400" />
@@ -224,14 +246,14 @@ export default function GiftCard() {
 
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-14">
 
-        {/* ── Buy Section ── */}
+        {/* Buy Section */}
         <section id="buy">
           <div className="flex items-center gap-3 mb-2">
             <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0">1</div>
             <h2 className="text-2xl font-black text-gray-900">Buy a Gift Card</h2>
           </div>
           <p className="text-gray-500 text-sm mb-8 pl-11">
-            Choose a trusted partner below. You'll be redirected to their site to purchase your gift card. Cards are available as physical scratch-and-reveal or instant digital delivery.
+            Choose a trusted partner below. You will be redirected to their site to purchase your gift card. Cards are available as physical scratch-and-reveal or instant digital delivery.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -268,25 +290,24 @@ export default function GiftCard() {
           <div className="mt-6 bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
             <AlertCircle size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
             <p className="text-blue-700 text-xs leading-relaxed">
-              <strong>Note:</strong> These are external third-party retailers. After purchasing, you'll receive a unique scratch-and-reveal code. Return to this page or go directly to checkout to enter your code. FIFA World Cup 2026™ is not responsible for third-party transactions.
+              <strong>Note:</strong> These are external third-party retailers. After purchasing, you will receive a unique scratch-and-reveal code. Return to this page or go directly to checkout to enter your code.
             </p>
           </div>
         </section>
 
-        {/* ── Redeem / Check Section ── */}
+        {/* Redeem Section */}
         <section id="redeem">
           <div className="flex items-center gap-3 mb-2">
             <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0">2</div>
-            <h2 className="text-2xl font-black text-gray-900">Scratch, Reveal & Redeem</h2>
+            <h2 className="text-2xl font-black text-gray-900">Scratch, Reveal &amp; Redeem</h2>
           </div>
           <p className="text-gray-500 text-sm mb-8 pl-11">
-            Got your code? Enter it below to check the balance, or go straight to checkout and select "Gift Card" as your payment method.
+            Got your code? Enter it below to check the balance, or go straight to checkout and select Gift Card as your payment method.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <RedemptionBox />
 
-            {/* Checkout shortcut */}
             <div className="space-y-4">
               <div className="bg-gradient-to-br from-[#0a1f5c] to-[#1a3a8c] text-white rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -299,7 +320,7 @@ export default function GiftCard() {
                   </div>
                 </div>
                 <p className="text-white/70 text-xs leading-relaxed mb-5">
-                  At checkout, add your items to cart, proceed to payment, and select <strong className="text-white">Gift Card</strong> as your payment method. Enter your code and it'll be validated and applied automatically.
+                  At checkout, add your items to cart, proceed to payment, and select <strong className="text-white">Gift Card</strong> as your payment method. Enter your code and it will be validated and applied automatically.
                 </p>
                 <div className="space-y-2">
                   <Link
@@ -317,7 +338,6 @@ export default function GiftCard() {
                 </div>
               </div>
 
-              {/* What can you buy */}
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <h4 className="font-black text-gray-900 text-sm mb-4">What Can You Buy?</h4>
                 <div className="space-y-2.5">
@@ -343,36 +363,11 @@ export default function GiftCard() {
           </div>
         </section>
 
-        {/* ── FAQ ── */}
+        {/* FAQ */}
         <section>
           <h2 className="text-2xl font-black text-gray-900 mb-6">Gift Card FAQ</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              {
-                q: 'Where do I buy a gift card?',
-                a: 'Click any partner link above (Paysafecard, Coincards, G2A). You'll be redirected to their site to purchase and receive your unique scratch-reveal code.',
-              },
-              {
-                q: 'How do I use the code?',
-                a: 'Add your desired tickets or merchandise to cart, go to Checkout, select "Gift Card" as payment method, and enter your code. Balance is deducted instantly.',
-              },
-              {
-                q: 'Can I use one code for multiple orders?',
-                a: 'Each code can only be used once. If your cart total is less than the card value, the remaining balance cannot be transferred to a new code.',
-              },
-              {
-                q: 'What if my code is invalid?',
-                a: 'First use the balance checker above. If the code shows as invalid, contact the retailer where you purchased the card — they can verify the code was activated.',
-              },
-              {
-                q: 'Is there an expiry on the code?',
-                a: 'Expiry depends on the partner retailer. Most codes are valid for 12–18 months from purchase. Check your receipt or the partner's terms for exact details.',
-              },
-              {
-                q: 'Can I use a gift card with other payment methods?',
-                a: 'Currently, checkout supports one payment method per order. If your gift card doesn't cover the full amount, consider adding only items that match your balance.',
-              },
-            ].map((item, i) => (
+            {FAQ_ITEMS.map((item, i) => (
               <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <h4 className="font-black text-gray-900 text-sm mb-2 flex items-start gap-2">
                   <span className="bg-blue-100 text-blue-600 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">Q</span>
@@ -384,17 +379,17 @@ export default function GiftCard() {
           </div>
         </section>
 
-        {/* ── Corporate ── */}
+        {/* Corporate */}
         <section>
           <div className="bg-gradient-to-br from-[#0a1f5c] to-[#1a3a8c] text-white rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Star size={18} className="text-yellow-400" />
-                <span className="text-yellow-400 text-xs font-black uppercase tracking-wide">Bulk & Corporate</span>
+                <span className="text-yellow-400 text-xs font-black uppercase tracking-wide">Bulk &amp; Corporate</span>
               </div>
               <h3 className="text-xl font-black mb-1">Buying for a Group or Company?</h3>
               <p className="text-white/70 text-sm">
-                Purchase bulk gift card vouchers for your team, fans, or corporate clients. Special pricing available for 10+ cards.
+                Purchase bulk gift card vouchers for your team, fans, or corporate clients. Special pricing available for 10 or more cards.
               </p>
             </div>
             <Link
